@@ -32,6 +32,8 @@ services:
     container_name: zipkin
     ports:
       - "9411:9411"
+    networks:
+      - spring
   rabbitmq:
     image: rabbitmq:3.9.11-management-alpine
     container_name: rabbitmq
@@ -43,6 +45,8 @@ services:
     container_name: eureka_server
     ports:
       - "8761:8761"
+    networks:
+      - spring
     depends_on:
       - zipkin
   apigw:
@@ -50,12 +54,16 @@ services:
     container_name: apigw
     ports:
       - "8083:8083"
+    networks:
+      - spring
     depends_on:
       - zipkin
       - eureka-server
 
 networks:
   postgres:
+    driver: bridge
+  spring:
     driver: bridge
 
 volumes:
